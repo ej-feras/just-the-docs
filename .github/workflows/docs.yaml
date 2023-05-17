@@ -1,0 +1,21 @@
+name: Publication of git pages
+
+on:
+  push:
+  workflow_dispatch:
+#t
+jobs:
+  jekyll:
+    runs-on: [k8s-dev-runner]
+    steps:
+      - uses: actions/checkout@v2
+      - name: 🔨 install dependencies & build site
+        uses: limjh16/jekyll-action-ts@v2
+        with:
+          enable_cache: true
+          custom_opts: "-d docs"
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: docs
+        if: github.ref == 'refs/heads/master'
